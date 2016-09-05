@@ -1,14 +1,36 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
-public class MainMenu : MonoBehaviour
+public class MainMenu : MonoBehaviour 
 {
-    public Texture BackgroundTexture;
+    public Text GameNameText;
 
-    void OnGUI()
+    public Button StartGameButton;
+    public Button OptionsButton;
+    public Button ExitButton;
+
+	void Start () 
     {
-        // Load background texture.
-        Rect screenRect = new Rect(0,0,Screen.width, Screen.height);
-        GUI.DrawTexture(screenRect, BackgroundTexture);
+        GameNameText = GameNameText.GetComponent<Text>();
+
+        StartGameButton = StartGameButton.GetComponent<Button>();
+        OptionsButton = OptionsButton.GetComponent<Button>();
+        ExitButton = ExitButton.GetComponent<Button>();
+	}
+	
+    public void StartGameButtonClick()
+    {
+        // Stub.
+    }
+
+    public void OptionsButtonClick()
+    {
+        // Stub.
+    }
+
+    public void ExitButtonClick()
+    {
+        Application.Quit();
     }
 }

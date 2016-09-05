@@ -21,7 +21,7 @@ public class MainMenu : MonoBehaviour
 	
     public void StartGameButtonClick()
     {
-        // Stub.
+        Application.LoadLevel(1);
     }
 
     public void OptionsButtonClick()

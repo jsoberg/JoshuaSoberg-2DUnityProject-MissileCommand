@@ -4,11 +4,22 @@ using System.Collections;
 
 public class MainMenu : MonoBehaviour 
 {
-    public Text GameNameText;
+    public enum DelayedButtonAction
+    {
+        Start,
+        Options,
+        Exit,
+        None
+    };
 
+    public Text GameNameText;
     public Button StartGameButton;
     public Button OptionsButton;
     public Button ExitButton;
+
+    public AudioSource ButtonClickSound;
+
+    private DelayedButtonAction CurrentDelayedButtonAction = DelayedButtonAction.None;
 
 	void Start () 
     {
@@ -18,19 +29,48 @@ public class MainMenu : MonoBehaviour
         OptionsButton = OptionsButton.GetComponent<Button>();
         ExitButton = ExitButton.GetComponent<Button>();
 	}
+
+    void Update()
+    {
+        if (CurrentDelayedButtonAction != DelayedButtonAction.None && !ButtonClickSound.isPlaying)
+        {
+            switch (CurrentDelayedButtonAction) {
+                case DelayedButtonAction.Start:
+                    Application.LoadLevel(1);
+                    break;
+                case DelayedButtonAction.Options:
+                    // Stub
+                    break;
+                case DelayedButtonAction.Exit:
+                    Application.Quit();
+                    break;
+
+            }
+            CurrentDelayedButtonAction = DelayedButtonAction.None;
+        }
+    }
 	
     public void StartGameButtonClick()
     {
-        Application.LoadLevel(1);
+        CurrentDelayedButtonAction = DelayedButtonAction.Start;
+        AnyButtonClicked();
+        
     }
 
     public void OptionsButtonClick()
     {
-        // Stub.
+        CurrentDelayedButtonAction = DelayedButtonAction.Options;
+        AnyButtonClicked();
     }
 
     public void ExitButtonClick()
     {
-        Application.Quit();
+        CurrentDelayedButtonAction = DelayedButtonAction.Exit;
+        AnyButtonClicked();
+    }
+
+    private void AnyButtonClicked()
+    {
+        ButtonClickSound.Play();
     }
 }

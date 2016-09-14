@@ -4,6 +4,8 @@ using System;
 
 public class InputController : MonoBehaviour 
 {
+	public GameObject ExplosionPrefab;
+
     void Start()
     {
 		
@@ -32,7 +34,8 @@ public class InputController : MonoBehaviour
 	{
 		switch (touchPhase) {
 		case TouchPhase.Began:
-			// TODO
+			touchPosition.z = 0;
+			Instantiate (ExplosionPrefab, touchPosition, Quaternion.Euler(0,180,0));
 			break;
 		case TouchPhase.Moved:
 			// TODO

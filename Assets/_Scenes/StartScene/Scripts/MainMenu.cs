@@ -35,20 +35,25 @@ public class MainMenu : MonoBehaviour
     {
         if (CurrentDelayedButtonAction != DelayedButtonAction.None && !ButtonClickSound.isPlaying)
         {
+			bool shouldContinuePlayBackground = false;
             switch (CurrentDelayedButtonAction) {
                 case DelayedButtonAction.Start:
                     Application.LoadLevel(1);
                     break;
                 case DelayedButtonAction.Options:
                     // Stub
+					shouldContinuePlayBackground = true;
                     break;
                 case DelayedButtonAction.Exit:
                     Application.Quit();
                     break;
 
             }
-			BackgroundMusic.Play ();
-            CurrentDelayedButtonAction = DelayedButtonAction.None;
+
+			CurrentDelayedButtonAction = DelayedButtonAction.None;
+			if (shouldContinuePlayBackground) {
+				BackgroundMusic.Play ();
+			}
         }
     }
 	

@@ -17,6 +17,7 @@ public class MainMenu : MonoBehaviour
     public Button OptionsButton;
     public Button ExitButton;
 
+	public AudioSource BackgroundMusic;
     public AudioSource ButtonClickSound;
 
     private DelayedButtonAction CurrentDelayedButtonAction = DelayedButtonAction.None;
@@ -46,6 +47,7 @@ public class MainMenu : MonoBehaviour
                     break;
 
             }
+			BackgroundMusic.Play ();
             CurrentDelayedButtonAction = DelayedButtonAction.None;
         }
     }
@@ -71,6 +73,7 @@ public class MainMenu : MonoBehaviour
 
     private void AnyButtonClicked()
     {
+		BackgroundMusic.Pause();
         ButtonClickSound.Play();
     }
 }

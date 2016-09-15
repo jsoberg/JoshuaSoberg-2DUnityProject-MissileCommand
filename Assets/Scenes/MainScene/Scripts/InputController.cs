@@ -4,7 +4,7 @@ using System;
 
 public class InputController : MonoBehaviour 
 {
-	public GameObject ExplosionPrefab;
+	public Rigidbody2D Missile;
 
     void Start()
     {
@@ -34,8 +34,9 @@ public class InputController : MonoBehaviour
 	{
 		switch (touchPhase) {
 		case TouchPhase.Began:
-			touchPosition.z = 0;
-			Instantiate (ExplosionPrefab, touchPosition, Quaternion.Euler(0,180,0));
+			Vector2 start = new Vector2(0, -50);
+			Rigidbody2D missileClone = (Rigidbody2D)Instantiate (Missile, start, Quaternion.identity);
+			missileClone.GetComponent<MissileMovement> ().TargetPosition = touchPosition;
 			break;
 		case TouchPhase.Moved:
 			// TODO

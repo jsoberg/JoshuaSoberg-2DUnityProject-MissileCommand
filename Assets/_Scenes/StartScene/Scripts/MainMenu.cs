@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class MainMenu : MonoBehaviour 
@@ -37,8 +38,8 @@ public class MainMenu : MonoBehaviour
         {
 			bool shouldContinuePlayBackground = false;
             switch (CurrentDelayedButtonAction) {
-                case DelayedButtonAction.Start:
-                    Application.LoadLevel(1);
+			case DelayedButtonAction.Start:
+					SceneManager.LoadScene("GameScene");
                     break;
                 case DelayedButtonAction.Options:
                     // Stub

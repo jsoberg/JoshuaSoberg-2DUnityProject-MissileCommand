@@ -1,9 +1,13 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using System.Collections;
 using System;
 
 public class InputController : MonoBehaviour 
 {
+	public const int MOUSE_FINGER_ID = -1;
+	
+	public EventSystem UiEventSystem;
 	public Rigidbody2D Missile;
 
     void Start()
@@ -15,17 +19,22 @@ public class InputController : MonoBehaviour
 	{
 		// Native android touch events
 		foreach (Touch touch in Input.touches) {
+			// Ignore if we're over the UI Event system.
+			if (UiEventSystem.IsPointerOverGameObject (touch.fingerId)) {
+				continue;
+			}
+
 			HandleTouch(touch.fingerId, Camera.main.ScreenToWorldPoint(touch.position), touch.phase);
 		}
 
-		// Simulated touch events from mouse events
-		if (Input.touchCount == 0) {
+		// Simulated touch events from mouse events.
+		if (Input.touchCount == 0 && !UiEventSystem.IsPointerOverGameObject (MOUSE_FINGER_ID)) {
 			if (Input.GetMouseButtonDown(0) ) {
-				HandleTouch(10, Camera.main.ScreenToWorldPoint(Input.mousePosition), TouchPhase.Began);
+				HandleTouch(MOUSE_FINGER_ID, Camera.main.ScreenToWorldPoint(Input.mousePosition), TouchPhase.Began);
 			} else if (Input.GetMouseButton(0) ) {
-				HandleTouch(10, Camera.main.ScreenToWorldPoint(Input.mousePosition), TouchPhase.Moved);
+				HandleTouch(MOUSE_FINGER_ID, Camera.main.ScreenToWorldPoint(Input.mousePosition), TouchPhase.Moved);
 			} else if (Input.GetMouseButtonUp(0) ) {
-				HandleTouch(10, Camera.main.ScreenToWorldPoint(Input.mousePosition), TouchPhase.Ended);
+				HandleTouch(MOUSE_FINGER_ID, Camera.main.ScreenToWorldPoint(Input.mousePosition), TouchPhase.Ended);
 			}
 		}
 	}
@@ -34,16 +43,21 @@ public class InputController : MonoBehaviour
 	{
 		switch (touchPhase) {
 		case TouchPhase.Began:
-			Vector2 start = new Vector2(0, -50);
-			Rigidbody2D missileClone = (Rigidbody2D)Instantiate (Missile, start, Quaternion.identity);
-			missileClone.GetComponent<MissileMovement> ().TargetPosition = touchPosition;
-			break;
-		case TouchPhase.Moved:
-			// TODO
-			break;
-		case TouchPhase.Ended:
-			// TODO
-			break;
+				LaunchMissile (touchPosition);
+				break;
+			case TouchPhase.Moved:
+				// TODO
+				break;
+			case TouchPhase.Ended:
+				// TODO
+				break;
 		}
+	}
+
+	private void LaunchMissile(Vector3 touchPosition)
+	{
+		Vector2 start = new Vector2(0, -40);
+		Rigidbody2D missileClone = (Rigidbody2D)Instantiate (Missile, start, Quaternion.identity);
+		missileClone.GetComponent<MissileMovement> ().TargetPosition = touchPosition;
 	}
 }

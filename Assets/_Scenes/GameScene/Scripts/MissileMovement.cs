@@ -53,7 +53,6 @@ public class MissileMovement : MonoBehaviour
 		}
 	}
 		
-
 	private void Explode()
 	{
 		Instantiate (ExplosionPrefab, transform.position, Quaternion.identity);

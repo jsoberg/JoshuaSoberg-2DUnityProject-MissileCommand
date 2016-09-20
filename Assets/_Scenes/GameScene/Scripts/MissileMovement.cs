@@ -58,6 +58,11 @@ public class MissileMovement : MonoBehaviour
 		}
 	}
 
+	void OnCollisionEnter2D(Collision2D coll)
+	{
+		Explode();
+	}
+
 	// Sometimes the missile will miss it's target and keep going. If it does, kill after a certain amount of time.
 	private void CheckForDeadMissile()
 	{

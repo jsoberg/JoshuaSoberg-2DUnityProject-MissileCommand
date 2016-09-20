@@ -56,7 +56,7 @@ public class InputController : MonoBehaviour
 
 	private void LaunchMissile(Vector3 touchPosition)
 	{
-		Vector2 start = new Vector2(0, -40);
+		Vector2 start = new Vector2(0, -35);
 		Rigidbody2D missileClone = (Rigidbody2D)Instantiate (Missile, start, Quaternion.identity);
 		missileClone.GetComponent<MissileMovement> ().TargetPosition = touchPosition;
 	}

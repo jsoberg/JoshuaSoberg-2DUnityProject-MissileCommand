@@ -13,6 +13,7 @@ public class MissileMovement : MonoBehaviour
 	public Vector2 TargetPosition;
 
 	// 3 Seconds
+	public bool CheckTimeToLive;
 	private const float MAX_TIME_TO_LIVE = 3;
 	private float TimeSinceStart;
 
@@ -20,18 +21,28 @@ public class MissileMovement : MonoBehaviour
 	{
 		StartTargetAnimation ();
 
+		// Start heading toward target.
+		Vector2 direction = Vector2.zero;
+		direction.x = (TargetPosition.x - transform.position.x);
+		direction.y = (TargetPosition.y - transform.position.y);
+		GetComponent<Rigidbody2D> ().AddRelativeForce (direction.normalized * InitialSpeed, ForceMode2D.Force);
+		RotateToTarget();
+	}
+
+	void RotateToTarget()
+	{
 		float diffX = TargetPosition.x - transform.position.x;
 		float diffY = TargetPosition.y - transform.position.y;
-		float dist = Vector3.Distance(TargetPosition, transform.position);
-		float a = Mathf.Acos(diffX / dist);
 
-		GetComponent<Rigidbody2D>().velocity = Quaternion.AngleAxis(a * Mathf.Rad2Deg - 90, Vector3.forward) * Vector3.up * InitialSpeed;
-		transform.rotation = Quaternion.AngleAxis(a * Mathf.Rad2Deg - 90, Vector3.forward);
+		float rotationZ = Mathf.Atan2(diffY, diffX) * Mathf.Rad2Deg;
+		transform.rotation = Quaternion.Euler(0f, 0f, rotationZ - 90);
 	}
 
 	void StartTargetAnimation()
 	{
-		TargetReticuleInstance = Instantiate (TargetReticule, TargetPosition, Quaternion.identity);
+		if (TargetReticule != null) {
+			TargetReticuleInstance = Instantiate (TargetReticule, TargetPosition, Quaternion.identity);
+		}
 	}
 
 	void Update () 
@@ -41,7 +52,10 @@ public class MissileMovement : MonoBehaviour
 		if (Vector2.Distance(transform.position, TargetPosition) <  MinimumTargetProximity) {
 			Explode();
 		}
-		CheckForDeadMissile ();
+
+		if (CheckTimeToLive) {
+			CheckForDeadMissile ();
+		}
 	}
 
 	// Sometimes the missile will miss it's target and keep going. If it does, kill after a certain amount of time.
@@ -61,7 +75,9 @@ public class MissileMovement : MonoBehaviour
 
 	private void Destroy()
 	{
-		Destroy (TargetReticuleInstance);
+		if (TargetReticuleInstance != null) {
+			Destroy (TargetReticuleInstance);
+		}
 		Destroy (gameObject);
 	}
 }

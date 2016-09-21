@@ -10,7 +10,7 @@ public class EnemyMissileController : MissileController
 
 	void LateUpdate() 
 	{
-		Vector3[] vertices = { StartPosition, transform.position };
+		Vector3[] vertices = { transform.position, StartPosition, };
 		GetComponent<LineRenderer> ().SetPositions (vertices);
 	}
 }

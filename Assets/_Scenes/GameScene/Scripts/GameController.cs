@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class GameController : MonoBehaviour 
@@ -9,7 +10,7 @@ public class GameController : MonoBehaviour
 
 	private int FramesSinceLastMissile;
 
-	private readonly Random MyRandom = new Random();
+	private readonly System.Random MyRandom = new System.Random();
 
 	void Start () 
 	{
@@ -25,11 +26,17 @@ public class GameController : MonoBehaviour
 		}
 	}
 
-	void CreateNewEnemyMissile()
+	private void CreateNewEnemyMissile()
 	{
-		Vector2 start = new Vector2(0, 50);
+		Vector2 start = GetPositionWithRandomX(50);
 		Rigidbody2D missileClone = (Rigidbody2D)Instantiate (EnemyMissilePrefab, start, Quaternion.identity);
-		Vector2 end = new Vector2(0, -35);
+		Vector2 end = GetPositionWithRandomX(-35);
 		missileClone.GetComponent<MissileController> ().TargetPosition = end;
+	}
+
+	private Vector2 GetPositionWithRandomX(int yVal)
+	{
+		int startX = MyRandom.Next(100) - 50;
+		return new Vector2(startX, yVal);
 	}
 }

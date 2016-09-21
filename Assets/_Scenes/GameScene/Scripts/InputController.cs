@@ -58,6 +58,6 @@ public class InputController : MonoBehaviour
 	{
 		Vector2 start = new Vector2(0, -35);
 		Rigidbody2D missileClone = (Rigidbody2D)Instantiate (Missile, start, Quaternion.identity);
-		missileClone.GetComponent<MissileMovement> ().TargetPosition = touchPosition;
+		missileClone.GetComponent<MissileController> ().TargetPosition = touchPosition;
 	}
 }

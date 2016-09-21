@@ -30,6 +30,6 @@ public class GameController : MonoBehaviour
 		Vector2 start = new Vector2(0, 50);
 		Rigidbody2D missileClone = (Rigidbody2D)Instantiate (EnemyMissilePrefab, start, Quaternion.identity);
 		Vector2 end = new Vector2(0, -35);
-		missileClone.GetComponent<MissileMovement> ().TargetPosition = end;
+		missileClone.GetComponent<MissileController> ().TargetPosition = end;
 	}
 }

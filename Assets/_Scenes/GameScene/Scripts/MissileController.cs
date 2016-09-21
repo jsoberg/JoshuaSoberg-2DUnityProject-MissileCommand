@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MissileMovement : MonoBehaviour 
+public class MissileController : MonoBehaviour 
 {
 	public GameObject TargetReticule;
 	private Object TargetReticuleInstance;
@@ -11,6 +11,7 @@ public class MissileMovement : MonoBehaviour
 	public float InitialSpeed = 1;
 	public float AcceleratePerSecond = 1;
 	public Vector2 TargetPosition;
+	protected Vector3 StartPosition;
 
 	// 3 Seconds
 	public bool CheckTimeToLive;
@@ -19,6 +20,7 @@ public class MissileMovement : MonoBehaviour
 
 	void Start () 
 	{
+		StartPosition = transform.position;
 		StartTargetAnimation ();
 
 		// Start heading toward target.
@@ -49,13 +51,18 @@ public class MissileMovement : MonoBehaviour
 	{
 		GetComponent<Rigidbody2D>().velocity = GetComponent<Rigidbody2D>().velocity + (GetComponent<Rigidbody2D>().velocity * AcceleratePerSecond * Time.deltaTime);
 
-		if (Vector2.Distance(transform.position, TargetPosition) <  MinimumTargetProximity) {
+		if (HasReachedTarget()) {
 			Explode();
 		}
 
 		if (CheckTimeToLive) {
 			CheckForDeadMissile ();
 		}
+	}
+
+	protected bool HasReachedTarget()
+	{
+		return (Vector2.Distance (transform.position, TargetPosition) < MinimumTargetProximity);
 	}
 
 	void OnCollisionEnter2D(Collision2D coll)
@@ -71,7 +78,7 @@ public class MissileMovement : MonoBehaviour
 			Destroy ();
 		}
 	}
-		
+
 	private void Explode()
 	{
 		Instantiate (ExplosionPrefab, transform.position, Quaternion.identity);

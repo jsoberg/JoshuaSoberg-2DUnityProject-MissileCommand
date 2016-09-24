@@ -18,6 +18,8 @@ public class MainMenu : MonoBehaviour
     public Button OptionsButton;
     public Button ExitButton;
 
+    public OptionsMenuOverlay OptionsMenu;
+
 	public AudioSource BackgroundMusic;
     public AudioSource ButtonClickSound;
 
@@ -42,8 +44,8 @@ public class MainMenu : MonoBehaviour
 					SceneManager.LoadScene("GameScene");
                     break;
                 case DelayedButtonAction.Options:
-                    // Stub
-					shouldContinuePlayBackground = true;
+                    OptionsMenu.Open();
+                    shouldContinuePlayBackground = true;
                     break;
                 case DelayedButtonAction.Exit:
                     Application.Quit();
@@ -62,7 +64,6 @@ public class MainMenu : MonoBehaviour
     {
         CurrentDelayedButtonAction = DelayedButtonAction.Start;
         AnyButtonClicked();
-        
     }
 
     public void OptionsButtonClick()
@@ -81,5 +82,12 @@ public class MainMenu : MonoBehaviour
     {
 		BackgroundMusic.Pause();
         ButtonClickSound.Play();
+    }
+
+    public void SetButtonsActive(bool active)
+    {
+        StartGameButton.gameObject.SetActive(active);
+        OptionsButton.gameObject.SetActive(active);
+        ExitButton.gameObject.SetActive(active);
     }
 }

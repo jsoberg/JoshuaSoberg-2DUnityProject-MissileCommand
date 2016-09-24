@@ -8,11 +8,12 @@ public class InputController : MonoBehaviour
 	public const int MOUSE_FINGER_ID = -1;
 	
 	public EventSystem UiEventSystem;
-	public Rigidbody2D Missile;
+
+    public SiloController CenterSilo;
 
     void Start()
     {
-		
+        CenterSilo = CenterSilo.GetComponent<SiloController>();
     }
 
 	void Update () 
@@ -56,8 +57,6 @@ public class InputController : MonoBehaviour
 
 	private void LaunchMissile(Vector3 touchPosition)
 	{
-		Vector2 start = new Vector2(0, -35);
-		Rigidbody2D missileClone = (Rigidbody2D)Instantiate (Missile, start, Quaternion.identity);
-		missileClone.GetComponent<MissileController> ().TargetPosition = touchPosition;
+        CenterSilo.FireMissile(touchPosition);
 	}
 }

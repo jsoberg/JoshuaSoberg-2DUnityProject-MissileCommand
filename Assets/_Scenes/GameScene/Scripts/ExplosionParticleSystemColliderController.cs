@@ -10,6 +10,11 @@ public class ExplosionParticleSystemColliderController : MonoBehaviour
 
     private ParticleSystem.Particle[] ReuseParticles = new ParticleSystem.Particle[1000];
 
+    void Start()
+    {
+        ExplosionParticleSystem.Emit(1);
+    }
+
     void Update ()
     {
         if (CheckForDeath()) {

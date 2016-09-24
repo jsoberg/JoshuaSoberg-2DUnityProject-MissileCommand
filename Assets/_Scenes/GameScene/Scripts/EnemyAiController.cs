@@ -43,13 +43,13 @@ public class EnemyAiController : MonoBehaviour
     {
         Vector2 start = GetPositionWithRandomX(50);
         Rigidbody2D missileClone = (Rigidbody2D)Instantiate(EnemyMissilePrefab, start, Quaternion.identity);
-        Vector2 end = GetPositionWithRandomX(-36);
+        Vector2 end = GetPositionWithRandomX(-50);
         missileClone.GetComponent<MissileController>().TargetPosition = end;
     }
 
     private Vector2 GetPositionWithRandomX(int yVal)
     {
-        int startX = MyRandom.Next(100) - 50;
+        int startX = MyRandom.Next(200) - 100;
         return new Vector2(startX, yVal);
     }
 }

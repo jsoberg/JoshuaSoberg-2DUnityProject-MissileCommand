@@ -42,5 +42,13 @@ public class SiloController : MonoBehaviour
         MissileSilo.SetActive(false);
         BurntMissileSilo.SetActive(true);
         BurningParticleSystem.SetActive(true);
+
+        InformGameOverController();
+    }
+
+    private void InformGameOverController()
+    {
+        GameOverController controller = (GameOverController) Object.FindObjectOfType(typeof(GameOverController));
+        controller.ImportantObjectDestroyed();
     }
 }

@@ -8,6 +8,8 @@ public class CityController : MonoBehaviour
     public GameObject BrokeCitySprite;
     public GameObject BurningCityParticleSystem;
 
+    public bool IsDestroyed;
+
 	void Start ()
     {
 	
@@ -25,10 +27,18 @@ public class CityController : MonoBehaviour
 
     private void RazeCity()
     {
+        IsDestroyed = true;
         CitySprite.SetActive(false);
         GetComponent<PolygonCollider2D>().enabled = false;
-
         BrokeCitySprite.SetActive(true);
         BurningCityParticleSystem.SetActive(true);
+
+        InformGameOverController();
+    }
+
+    private void InformGameOverController()
+    {
+        GameOverController controller = (GameOverController)Object.FindObjectOfType(typeof(GameOverController));
+        controller.ImportantObjectDestroyed();
     }
 }

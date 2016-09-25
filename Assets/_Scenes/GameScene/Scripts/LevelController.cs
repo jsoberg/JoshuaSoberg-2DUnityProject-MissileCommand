@@ -25,7 +25,7 @@ public class LevelController : MonoBehaviour
         InformListenersLevelEnded();
 
         AirRaidSiren.Play();
-        StartCoroutine(FadeTextLevelTextInAndOut(2f));
+        StartCoroutine(FadeLevelTextInAndOut(2f));
     }
 
     public void InformListenersLevelEnded()
@@ -43,7 +43,7 @@ public class LevelController : MonoBehaviour
 	
 	}
 
-    public IEnumerator FadeTextLevelTextInAndOut(float t)
+    public IEnumerator FadeLevelTextInAndOut(float t)
     {
         LevelText.color = new Color(LevelText.color.r, LevelText.color.g, LevelText.color.b, 0);
         while (LevelText.color.a < 1.0f) {

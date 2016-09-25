@@ -50,10 +50,9 @@ public class EnemyAiController : LevelChangeListener
 
     private bool IsLevelOver()
     {
-        Object[] missiles = Object.FindObjectsOfType(typeof(EnemyMissileController));
-        Object[] explosions = Object.FindObjectsOfType(typeof(EnemyExplosionAnimationController));
+        Object[] enemyObjects = Object.FindObjectsOfType(typeof(Enemy));
 
-        return (NumMissilesLeft == 0 && missiles.Length == 0 && explosions.Length == 0);
+        return (NumMissilesLeft == 0 && enemyObjects.Length == 0);
     }
 
     private int GetNewFramesToNextMissile()

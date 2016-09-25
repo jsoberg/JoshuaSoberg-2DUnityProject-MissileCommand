@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MissileController : MonoBehaviour 
+public abstract class MissileController : MonoBehaviour 
 {
 	public GameObject TargetReticule;
 	private Object TargetReticuleInstance;
@@ -29,7 +29,11 @@ public class MissileController : MonoBehaviour
 		direction.y = (TargetPosition.y - transform.position.y);
 		GetComponent<Rigidbody2D> ().AddRelativeForce (direction.normalized * InitialSpeed, ForceMode2D.Force);
 		RotateToTarget();
+
+        OnStart();
 	}
+
+    protected abstract void OnStart();
 
 	void RotateToTarget()
 	{
@@ -79,7 +83,7 @@ public class MissileController : MonoBehaviour
 		}
 	}
 
-	private void Explode()
+	protected void Explode()
 	{
 		Instantiate (ExplosionPrefab, transform.position, Quaternion.identity);
 		Destroy();

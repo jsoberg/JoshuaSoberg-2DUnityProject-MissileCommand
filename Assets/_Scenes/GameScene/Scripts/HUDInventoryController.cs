@@ -62,6 +62,7 @@ public class HUDInventoryController : LevelChangeListener
 
     public override void OnLevelEnded()
     {
+        NumMissilesLeft = 0;
         MissilesLeftIcon.SetActive(false);
     }
 

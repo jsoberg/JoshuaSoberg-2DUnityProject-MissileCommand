@@ -49,6 +49,7 @@ public class GameOverController : MonoBehaviour
 
     private void GameOver()
     {
+        ((LevelController) Object.FindObjectOfType(typeof(LevelController))).InformGameOver();
         GameOverText.gameObject.SetActive(true);
         StartCoroutine(FadeGameOverTextIn(3f));
     }

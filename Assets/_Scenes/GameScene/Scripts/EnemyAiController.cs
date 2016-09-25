@@ -63,7 +63,7 @@ public class EnemyAiController : LevelChangeListener
             case Difficulty.Level.Easy:
                 return 150 - (MyRandom.Next(2) * (level - 1));
             case Difficulty.Level.Normal:
-                return 100 - (MyRandom.Next(2) * (level - 1));
+                return 100 - (MyRandom.Next(3) * (level - 1));
             case Difficulty.Level.Hard:
                 return 75 - (MyRandom.Next(5) * (level - 1));
             default:
@@ -75,7 +75,7 @@ public class EnemyAiController : LevelChangeListener
     {
         Vector2 start = GetPositionWithRandomX(50);
         Rigidbody2D missileClone = (Rigidbody2D)Instantiate(EnemyMissilePrefab, start, Quaternion.identity);
-        Vector2 end = GetPositionWithRandomX(-50);
+        Vector2 end = ChooseTargetPositionForMissile();
         missileClone.GetComponent<MissileController>().TargetPosition = end;
 
         NumMissilesLeft--;
@@ -87,12 +87,78 @@ public class EnemyAiController : LevelChangeListener
         return new Vector2(startX, yVal);
     }
 
+    private Vector2 ChooseTargetPositionForMissile()
+    {
+        switch (Difficulty.GetDifficultyLevel()) {
+            case Difficulty.Level.Easy:
+                return DecidePathForMissile(50, 30, 20, .5d);
+            case Difficulty.Level.Normal:
+                return DecidePathForMissile(15, 35, 50, .2d);
+            case Difficulty.Level.Hard:
+                return DecidePathForMissile(1, 35, 64, .06d);
+            default:
+                throw new System.SystemException("Unkown difficulty level");
+        }
+    }
+
+    // Send in proportion of decision type (* 100) and the percentage that we choose a destroyed city/silo instead of active, and we will decide the path for the missile in a roulette-wheel fashion.
+    // e.g. If we want 10% random, 20% toward silo, and 70% toward city, with a 20% chance we will choose a destroyed city/silo: (10, 20, 70, .2)
+    private Vector2 DecidePathForMissile(int random, int towardSilo, int towardCity, double chanceDestroyed)
+    {
+        int wheel = MyRandom.Next(random + towardSilo + towardCity) + 1;
+        if (wheel < random) {
+            return GetPositionWithRandomX(-50);
+        } else if (wheel < towardSilo) {
+            return ChooseSiloDestination(chanceDestroyed);
+        } else {
+            return ChooseCityDestination(chanceDestroyed);
+        }
+    }
+
+    private Vector2 ChooseSiloDestination(double chanceDestroyed)
+    {
+        SiloController[] silos = (SiloController[])Object.FindObjectsOfType(typeof(SiloController));
+
+        SiloController chosenSilo = silos[MyRandom.Next(silos.Length)];
+        for (int tries = 0; tries < silos.Length; tries++) {
+            double chance = MyRandom.NextDouble();
+            if (chance < chanceDestroyed && chosenSilo.IsDestroyed) {
+                return chosenSilo.gameObject.transform.position;
+            } else if (!chosenSilo.IsDestroyed) {
+                return chosenSilo.gameObject.transform.position;
+            }
+
+            // Try again to see if we can fit the specifications.
+            chosenSilo = silos[MyRandom.Next(silos.Length)];
+        }
+        return chosenSilo.gameObject.transform.position;
+    }
+
+    private Vector2 ChooseCityDestination(double chanceDestroyed)
+    {
+        CityController[] cities = (CityController[]) Object.FindObjectsOfType(typeof(CityController));
+
+        CityController chosenCity = cities[MyRandom.Next(cities.Length)];
+        for (int tries = 0; tries < cities.Length; tries ++) {
+            double chance = MyRandom.NextDouble();
+            if (chance < chanceDestroyed && chosenCity.IsDestroyed) {
+                return chosenCity.gameObject.transform.position;
+            } else if (!chosenCity.IsDestroyed) {
+                return chosenCity.gameObject.transform.position;
+            }
+
+            // Try again to see if we can fit the specifications.
+            chosenCity = cities[MyRandom.Next(cities.Length)];
+        }
+        return chosenCity.gameObject.transform.position;
+    }
+
     public override void OnLevelEnded()
     {
         SetActive(false);
     }
 
-    public override void NewLevelStarted(int level)
+    public override void OnNewLevelStarted(int level)
     {
         NumMissilesLeft = GetNumMissilesForLevel(level);
         FramesToNextMissile = GetNewFramesToNextMissile();
@@ -103,13 +169,18 @@ public class EnemyAiController : LevelChangeListener
     {
         switch (Difficulty.GetDifficultyLevel()) {
             case Difficulty.Level.Easy:
-                return 30 + (3 * (level - 1));
+                return 20 + (3 * (level - 1));
             case Difficulty.Level.Normal:
-                return 35 + (4 * (level - 1));
+                return 25 + (4 * (level - 1));
             case Difficulty.Level.Hard:
-                return 26 + (5 * (level - 1));
+                return 30 + (5 * (level - 1));
             default:
                 throw new System.SystemException("Unkown difficulty level");
         }
+    }
+
+    public override void OnGameOver()
+    {
+        SetActive(false);
     }
 }

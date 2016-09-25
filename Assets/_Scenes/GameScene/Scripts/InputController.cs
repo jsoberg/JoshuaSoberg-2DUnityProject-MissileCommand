@@ -70,7 +70,7 @@ public class InputController : MonoBehaviour
             return;
         }
 
-        int closest = 0;
+        int closest = -1;
         float closestDistance = float.MaxValue; 
         for (int i = 0; i < AllSilos.Length; i++) {
             if (AllSilos[i].IsDestroyed) {
@@ -82,6 +82,11 @@ public class InputController : MonoBehaviour
                 closestDistance = distance;
                 closest = i; 
             }
+        }
+
+        // No active missile silos.
+        if (closest == -1) {
+            HudInventoryController.MissileFireAttempted();
         }
 
         AllSilos[closest].FireMissile(touchPosition);

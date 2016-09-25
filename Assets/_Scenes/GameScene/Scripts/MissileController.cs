@@ -74,7 +74,7 @@ public abstract class MissileController : MonoBehaviour
 		}
 	}
 
-	protected bool HasReachedTarget()
+	protected virtual bool HasReachedTarget()
 	{
 		return (Vector2.Distance (transform.position, TargetPosition) < MinimumTargetProximity);
 	}

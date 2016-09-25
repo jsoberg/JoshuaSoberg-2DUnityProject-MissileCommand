@@ -27,18 +27,18 @@ public class EnemyMissileController : MissileController
     protected override void PostStart()
     {
         Object[] enemies = Object.FindObjectsOfType(typeof(Enemy));
-        foreach (Enemy e in enemies)
-        {
-            if (e.gameObject.GetComponent<Collider2D>() != null)
-            {
+        foreach (Enemy e in enemies) {
+
+            if (e.gameObject.GetComponent<Collider2D>() != null) {
                 Physics2D.IgnoreCollision(GetComponent<Collider2D>(), e.gameObject.GetComponent<Collider2D>());
             }
         }
     }
 
-    new protected bool HasReachedTarget()
+    protected override bool HasReachedTarget()
 	{
-		return (transform.position.x - TargetPosition.x) <= MinimumTargetProximity;
+        // We don't care about this for enemy missiles, we just want them to collide eventually.
+        return false;
 	}
 
 	void LateUpdate() 

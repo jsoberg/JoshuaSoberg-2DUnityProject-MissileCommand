@@ -22,13 +22,13 @@ public class LevelController : MonoBehaviour
         int newLevel = Level.GetCurrentLevel();
         LevelText.gameObject.SetActive(true);
         LevelText.text = string.Format(LEVEL_TEXT, newLevel);
-        InformListenersLevelEnded();
+        InformLevelEnded();
 
         AirRaidSiren.Play();
         StartCoroutine(FadeLevelTextInAndOut(2f));
     }
 
-    public void InformListenersLevelEnded()
+    public void InformLevelEnded()
     {
         Object[] listeners = Object.FindObjectsOfType(typeof(LevelChangeListener));
 
@@ -59,15 +59,24 @@ public class LevelController : MonoBehaviour
         }
 
         LevelText.gameObject.SetActive(false);
-        InformListenersOfNextLevel();
+        InformNextLevel();
     }
 
-    public void InformListenersOfNextLevel()
+    public void InformNextLevel()
     {
         Object[] listeners = Object.FindObjectsOfType(typeof(LevelChangeListener));
 
         foreach (LevelChangeListener l in listeners) {
-            l.NewLevelStarted(Level.GetCurrentLevel());
+            l.OnNewLevelStarted(Level.GetCurrentLevel());
+        }
+    }
+
+    public void InformGameOver()
+    {
+        Object[] listeners = Object.FindObjectsOfType(typeof(LevelChangeListener));
+
+        foreach (LevelChangeListener l in listeners) {
+            l.OnGameOver();
         }
     }
 }
@@ -76,5 +85,7 @@ public abstract class LevelChangeListener : MonoBehaviour
 {
     public abstract void OnLevelEnded();
 
-    public abstract void NewLevelStarted(int level);
+    public abstract void OnNewLevelStarted(int level);
+
+    public abstract void OnGameOver();
 }

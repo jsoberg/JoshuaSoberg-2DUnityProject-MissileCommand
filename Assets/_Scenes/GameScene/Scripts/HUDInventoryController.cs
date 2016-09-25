@@ -40,13 +40,18 @@ public class HUDInventoryController : LevelChangeListener
         PointsText.transform.position = new Vector3(lowerRight.x - quarterTextWidth, currentPointsTextPosition.y, currentPointsTextPosition.z);
     }
 
+    public override void OnGameOver()
+    {
+        
+    }
+
     public override void OnLevelEnded()
     {
         NumMissilesLeft = 0;
         MissilesLeftIcon.SetActive(false);
     }
 
-    public override void NewLevelStarted(int level)
+    public override void OnNewLevelStarted(int level)
     {
         NumMissilesLeft = GetNumMissilesForLevel(level);
         UpdateMissileInventoryHud();

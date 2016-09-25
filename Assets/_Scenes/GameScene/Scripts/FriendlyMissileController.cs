@@ -3,7 +3,7 @@ using System.Collections;
 
 public class FriendlyMissileController : MissileController
 {
-    protected override void OnStart()
+    protected override void PostStart()
     {
         Object[] friendlies = Object.FindObjectsOfType(typeof(Friendly));
         foreach (Friendly f in friendlies) {

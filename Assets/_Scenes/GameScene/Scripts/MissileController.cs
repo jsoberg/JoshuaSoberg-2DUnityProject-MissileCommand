@@ -20,6 +20,8 @@ public abstract class MissileController : MonoBehaviour
 
 	void Start () 
 	{
+        PreStart();
+
 		StartPosition = transform.position;
 		StartTargetAnimation ();
 
@@ -30,10 +32,18 @@ public abstract class MissileController : MonoBehaviour
 		GetComponent<Rigidbody2D> ().AddRelativeForce (direction.normalized * InitialSpeed, ForceMode2D.Force);
 		RotateToTarget();
 
-        OnStart();
+        PostStart();
 	}
 
-    protected abstract void OnStart();
+    protected virtual void PreStart()
+    {
+
+    }
+
+    protected virtual void PostStart()
+    {
+
+    }
 
 	void RotateToTarget()
 	{

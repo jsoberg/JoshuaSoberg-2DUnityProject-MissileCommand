@@ -82,10 +82,16 @@ public abstract class MissileController : MonoBehaviour
 	void OnCollisionEnter2D(Collision2D coll)
 	{
 		Explode();
+        CollidedWith(coll);
 	}
 
-	// Sometimes the missile will miss it's target and keep going. If it does, kill after a certain amount of time.
-	private void CheckForDeadMissile()
+    protected virtual void CollidedWith(Collision2D coll)
+    {
+
+    }
+
+    // Sometimes the missile will miss it's target and keep going. If it does, kill after a certain amount of time.
+    private void CheckForDeadMissile()
 	{
 		TimeSinceStart += Time.deltaTime;
 		if (TimeSinceStart >= MAX_TIME_TO_LIVE) {

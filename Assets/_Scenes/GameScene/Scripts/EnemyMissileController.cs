@@ -46,4 +46,41 @@ public class EnemyMissileController : MissileController
 		Vector3[] vertices = { transform.position, StartPosition, };
 		GetComponent<LineRenderer> ().SetPositions (vertices);
 	}
+
+    protected override void CollidedWith(Collision2D coll)
+    {
+        if(WasDestroyedByFriendlyMissile(coll)) {
+            InformScoreAdded();
+        }
+    }
+
+    // This enemy missile was destroyed by a friendly missile IF the collider was a friendly and was either a missile or a friendly explosion.
+    private bool WasDestroyedByFriendlyMissile(Collision2D coll)
+    {
+        return Friendly.IsFriendly(coll.gameObject) &&
+            (coll.gameObject.GetComponent<FriendlyMissileController>() != null
+            || coll.gameObject.GetComponent<ExplosionParticleSystemColliderController>() != null);
+    }
+
+    private void InformScoreAdded()
+    {
+        int scoreAdded = GetScoreAddedForMissileDestruction();
+        HUDInventoryController controller = (HUDInventoryController)Object.FindObjectOfType(typeof(HUDInventoryController));
+        controller.AddScore(scoreAdded);
+    }
+
+    protected int GetScoreAddedForMissileDestruction()
+    {
+        switch (Difficulty.GetDifficultyLevel())
+        {
+            case Difficulty.Level.Easy:
+                return 100;
+            case Difficulty.Level.Normal:
+                return 150;
+            case Difficulty.Level.Hard:
+                return 200;
+            default:
+                throw new System.SystemException("Unkown difficulty level");
+        }
+    }
 }

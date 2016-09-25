@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 
-public class EnemyAiController : MonoBehaviour
+public class EnemyAiController : LevelChangeListener
 {
     private const int FRAMES_TO_NEXT_MISSILE = 100;
 
@@ -51,5 +51,15 @@ public class EnemyAiController : MonoBehaviour
     {
         int startX = MyRandom.Next(200) - 100;
         return new Vector2(startX, yVal);
+    }
+
+    public override void OnLevelEnded()
+    {
+        SetActive(false);
+    }
+
+    public override void NewLevelStarted(int level)
+    {
+        SetActive(true);
     }
 }

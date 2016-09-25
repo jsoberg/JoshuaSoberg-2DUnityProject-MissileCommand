@@ -8,6 +8,7 @@ public class InputController : MonoBehaviour
 	public const int MOUSE_FINGER_ID = -1;
 	
 	public EventSystem UiEventSystem;
+    public HUDInventoryController HudInventoryController;
 
     public SiloController CenterSilo;
     public SiloController LeftSilo;
@@ -64,6 +65,11 @@ public class InputController : MonoBehaviour
 
 	private void LaunchMissile(Vector3 touchPosition)
 	{
+        if(!HudInventoryController.CanFireMissile()) {
+            HudInventoryController.MissileFireAttempted();
+            return;
+        }
+
         int closest = 0;
         float closestDistance = float.MaxValue; 
         for (int i = 0; i < AllSilos.Length; i++) {
@@ -79,5 +85,7 @@ public class InputController : MonoBehaviour
         }
 
         AllSilos[closest].FireMissile(touchPosition);
-	}
+        HudInventoryController.MissileFired();
+
+    }
 }

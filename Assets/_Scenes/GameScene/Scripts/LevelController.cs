@@ -21,11 +21,21 @@ public class LevelController : MonoBehaviour
         int newLevel = Level.GetCurrentLevel();
         LevelText.gameObject.SetActive(true);
         LevelText.text = string.Format(LEVEL_TEXT, newLevel);
+        InformListenersLevelEnded();
 
         StartCoroutine(FadeTextLevelTextInAndOut(1f));
     }
 
-    // Update is called once per frame
+    public void InformListenersLevelEnded()
+    {
+        Object[] listeners = Object.FindObjectsOfType(typeof(LevelChangeListener));
+
+        foreach (LevelChangeListener l in listeners)
+        {
+            l.OnLevelEnded();
+        }
+    }
+
     void Update ()
     {
 	
@@ -47,6 +57,22 @@ public class LevelController : MonoBehaviour
         }
 
         LevelText.gameObject.SetActive(false);
-        EnemyAiController.SetActive(true);
+        InformListenersOfNextLevel();
     }
+
+    public void InformListenersOfNextLevel()
+    {
+        Object[] listeners = Object.FindObjectsOfType(typeof(LevelChangeListener));
+
+        foreach (LevelChangeListener l in listeners) {
+            l.NewLevelStarted(Level.GetCurrentLevel());
+        }
+    }
+}
+
+public abstract class LevelChangeListener : MonoBehaviour
+{
+    public abstract void OnLevelEnded();
+
+    public abstract void NewLevelStarted(int level);
 }

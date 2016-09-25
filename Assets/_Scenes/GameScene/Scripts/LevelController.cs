@@ -19,6 +19,7 @@ public class LevelController : MonoBehaviour
     {
         Level.NextLevel();
         int newLevel = Level.GetCurrentLevel();
+        LevelText.gameObject.SetActive(true);
         LevelText.text = string.Format(LEVEL_TEXT, newLevel);
 
         StartCoroutine(FadeTextLevelTextInAndOut(1f));
@@ -45,6 +46,7 @@ public class LevelController : MonoBehaviour
             yield return null;
         }
 
+        LevelText.gameObject.SetActive(false);
         EnemyAiController.SetActive(true);
     }
 }

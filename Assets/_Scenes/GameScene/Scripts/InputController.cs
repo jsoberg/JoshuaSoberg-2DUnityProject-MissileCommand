@@ -10,10 +10,17 @@ public class InputController : MonoBehaviour
 	public EventSystem UiEventSystem;
 
     public SiloController CenterSilo;
+    public SiloController LeftSilo;
+    public SiloController RightSilo;
+    private SiloController[] AllSilos;
 
     void Start()
     {
         CenterSilo = CenterSilo.GetComponent<SiloController>();
+        LeftSilo = LeftSilo.GetComponent<SiloController>();
+        RightSilo = RightSilo.GetComponent<SiloController>();
+
+        AllSilos = new SiloController[] { CenterSilo, LeftSilo, RightSilo };
     }
 
 	void Update () 
@@ -57,6 +64,20 @@ public class InputController : MonoBehaviour
 
 	private void LaunchMissile(Vector3 touchPosition)
 	{
-        CenterSilo.FireMissile(touchPosition);
+        int closest = 0;
+        float closestDistance = float.MaxValue; 
+        for (int i = 0; i < AllSilos.Length; i++) {
+            if (AllSilos[i].IsDestroyed) {
+                continue;
+            }
+
+            float distance = Vector2.Distance(AllSilos[i].gameObject.transform.position, touchPosition);
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closest = i; 
+            }
+        }
+
+        AllSilos[closest].FireMissile(touchPosition);
 	}
 }

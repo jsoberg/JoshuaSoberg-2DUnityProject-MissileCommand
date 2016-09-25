@@ -8,6 +8,7 @@ public class LevelController : MonoBehaviour
 
     public Text LevelText;
     public EnemyAiController EnemyAiController;
+    public AudioSource AirRaidSiren;
 
 	void Start ()
     {
@@ -15,7 +16,7 @@ public class LevelController : MonoBehaviour
         NextLevel();
 	}
 
-    private void NextLevel()
+    public void NextLevel()
     {
         Level.NextLevel();
         int newLevel = Level.GetCurrentLevel();
@@ -23,7 +24,8 @@ public class LevelController : MonoBehaviour
         LevelText.text = string.Format(LEVEL_TEXT, newLevel);
         InformListenersLevelEnded();
 
-        StartCoroutine(FadeTextLevelTextInAndOut(1f));
+        AirRaidSiren.Play();
+        StartCoroutine(FadeTextLevelTextInAndOut(2f));
     }
 
     public void InformListenersLevelEnded()

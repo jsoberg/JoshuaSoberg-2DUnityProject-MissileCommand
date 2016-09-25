@@ -76,9 +76,9 @@ public class HUDInventoryController : LevelChangeListener
     {
         switch (Difficulty.GetDifficultyLevel()) {
             case Difficulty.Level.Easy:
-                return 50 + (10 * (level - 1));
+                return 50 + (2 * (level - 1));
             case Difficulty.Level.Normal:
-                return 40 + (5 * (level - 1));
+                return 40 + (2 * (level - 1));
             case Difficulty.Level.Hard:
                 return 30 + (2 * (level - 1));
             default:

@@ -81,9 +81,9 @@ public abstract class MissileController : MonoBehaviour
 
 	void OnCollisionEnter2D(Collision2D coll)
 	{
-		Explode();
         CollidedWith(coll);
-	}
+        Explode();
+    }
 
     protected virtual void CollidedWith(Collision2D coll)
     {
@@ -99,13 +99,13 @@ public abstract class MissileController : MonoBehaviour
 		}
 	}
 
-	protected void Explode()
+	protected virtual void Explode()
 	{
 		Instantiate (ExplosionPrefab, transform.position, Quaternion.identity);
 		Destroy();
 	}
 
-	private void Destroy()
+	protected void Destroy()
 	{
 		if (TargetReticuleInstance != null) {
 			Destroy (TargetReticuleInstance);

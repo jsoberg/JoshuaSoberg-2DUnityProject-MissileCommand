@@ -69,7 +69,7 @@ public class EnemyMissileController : MissileController
         controller.AddScore(scoreAdded);
     }
 
-    protected int GetScoreAddedForMissileDestruction()
+    protected virtual int GetScoreAddedForMissileDestruction()
     {
         switch (Difficulty.GetDifficultyLevel())
         {

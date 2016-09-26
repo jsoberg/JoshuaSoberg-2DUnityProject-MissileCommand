@@ -4,6 +4,7 @@ using System.Collections;
 public class EnemyAiController : LevelChangeListener
 {
     public Rigidbody2D EnemyMissilePrefab;
+    public Rigidbody2D EnemyMIRVPrefab;
 
     private readonly System.Random MyRandom = new System.Random();
 
@@ -71,14 +72,46 @@ public class EnemyAiController : LevelChangeListener
         }
     }
 
+    public void RapidDeployMissilesFromPosition(int numMissiles, Vector2 startPosition)
+    {
+        for (int i = 0; i < numMissiles; i ++) {
+            Rigidbody2D missileClone = (Rigidbody2D)Instantiate(EnemyMissilePrefab, startPosition, Quaternion.identity);
+            Vector2 end = ChooseTargetPositionForMissile();
+            missileClone.GetComponent<MissileController>().TargetPosition = end;
+        }
+    }
+
     private void CreateNewEnemyMissile()
     {
-        Vector2 start = GetPositionWithRandomX(50);
-        Rigidbody2D missileClone = (Rigidbody2D)Instantiate(EnemyMissilePrefab, start, Quaternion.identity);
+        Rigidbody2D missileClone = InstantiateNewMissileForDifficulty();
         Vector2 end = ChooseTargetPositionForMissile();
         missileClone.GetComponent<MissileController>().TargetPosition = end;
 
         NumMissilesLeft--;
+    }
+
+    private Rigidbody2D InstantiateNewMissileForDifficulty()
+    {
+        switch (Difficulty.GetDifficultyLevel()) {
+            case Difficulty.Level.Easy:
+                return ChooseNewMissileWithMirvProbability(.02d);
+            case Difficulty.Level.Normal:
+                return ChooseNewMissileWithMirvProbability(.05d);
+            case Difficulty.Level.Hard:
+                return ChooseNewMissileWithMirvProbability(.1d);
+            default:
+                throw new System.SystemException("Unkown difficulty level");
+        }
+    }
+
+    private Rigidbody2D ChooseNewMissileWithMirvProbability(double probabilityMirv)
+    {
+        double chance = MyRandom.NextDouble();
+        if (chance < probabilityMirv) {
+            return (Rigidbody2D) Instantiate(EnemyMIRVPrefab, GetPositionWithRandomX(50), Quaternion.identity);
+        } else {
+            return (Rigidbody2D) Instantiate(EnemyMissilePrefab, GetPositionWithRandomX(50), Quaternion.identity);
+        }
     }
 
     private Vector2 GetPositionWithRandomX(int yVal)

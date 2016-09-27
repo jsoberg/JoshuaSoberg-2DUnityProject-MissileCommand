@@ -60,7 +60,8 @@ public class GameOverController : MonoBehaviour
         if (IsGameOver) {
             return;
         }
-
+			
+		Level.Reset ();
         IsGameOver = true;
         ((LevelController) Object.FindObjectOfType(typeof(LevelController))).InformGameOver();
         GameOverText.gameObject.SetActive(true);

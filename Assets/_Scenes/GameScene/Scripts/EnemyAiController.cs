@@ -202,7 +202,7 @@ public class EnemyAiController : LevelChangeListener
     {
         switch (Difficulty.GetDifficultyLevel()) {
             case Difficulty.Level.Easy:
-                return 1 + (3 * (level - 1));
+                return 20 + (3 * (level - 1));
             case Difficulty.Level.Normal:
                 return 25 + (4 * (level - 1));
             case Difficulty.Level.Hard:

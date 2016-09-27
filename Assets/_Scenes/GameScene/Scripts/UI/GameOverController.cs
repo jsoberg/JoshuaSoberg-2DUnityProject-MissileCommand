@@ -94,12 +94,12 @@ public class GameOverController : MonoBehaviour
     {
         HUDInventoryAndScoreController scoreController = (HUDInventoryAndScoreController) Object.FindObjectOfType(typeof(HUDInventoryAndScoreController));
         int score = scoreController.GetCurrentScore();
-        Queue<HighScore> highScores = HighScoreUtils.GetHighScores();
+        SortedList<int, HighScore> highScores = HighScoreUtils.GetHighScores();
         if (highScores.Count < 10) {
             return true;
         }
 
-        foreach (HighScore highScore in highScores) {
+        foreach (HighScore highScore in highScores.Values) {
             if (score >= highScore.Score) {
                 return true;
             }

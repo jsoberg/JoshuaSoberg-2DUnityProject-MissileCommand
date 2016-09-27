@@ -110,6 +110,11 @@ public class HUDInventoryAndScoreController : LevelChangeListener
         }
     }
 
+    public int GetNumMissilesLeft()
+    {
+        return NumMissilesLeft;
+    }
+
     // ========================================
     // Score
     // ========================================

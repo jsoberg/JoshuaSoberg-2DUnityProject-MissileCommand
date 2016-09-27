@@ -27,7 +27,7 @@ public static class HighScoreUtils
     {
         HighScore newScore = new HighScore(initials, score);
         SortedList<int, HighScore> scoresQueue = GetHighScores();
-        scoresQueue.Add(score, new HighScore(initials, score));
+        scoresQueue.Add(score, newScore);
         PrintScoresToPlayerPrefs(scoresQueue);
     }
 

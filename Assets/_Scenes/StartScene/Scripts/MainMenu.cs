@@ -8,6 +8,7 @@ public class MainMenu : MonoBehaviour
     public enum DelayedButtonAction
     {
         Start,
+        HighScores,
         Options,
         Exit,
         None
@@ -15,6 +16,7 @@ public class MainMenu : MonoBehaviour
 
     public Text GameNameText;
     public Button StartGameButton;
+    public Button HighScoresButton;
     public Button OptionsButton;
     public Button ExitButton;
 
@@ -27,11 +29,7 @@ public class MainMenu : MonoBehaviour
 
 	void Start () 
     {
-        GameNameText = GameNameText.GetComponent<Text>();
 
-        StartGameButton = StartGameButton.GetComponent<Button>();
-        OptionsButton = OptionsButton.GetComponent<Button>();
-        ExitButton = ExitButton.GetComponent<Button>();
 	}
 
     void Update()
@@ -40,8 +38,11 @@ public class MainMenu : MonoBehaviour
         {
 			bool shouldContinuePlayBackground = false;
             switch (CurrentDelayedButtonAction) {
-			case DelayedButtonAction.Start:
+			    case DelayedButtonAction.Start:
 					SceneManager.LoadScene("GameScene");
+                    break;
+                case DelayedButtonAction.HighScores:
+                    SceneManager.LoadScene("HighScoreScene");
                     break;
                 case DelayedButtonAction.Options:
                     OptionsMenu.Open();
@@ -66,6 +67,12 @@ public class MainMenu : MonoBehaviour
         AnyButtonClicked();
     }
 
+    public void HighScoresButtonClick()
+    {
+        CurrentDelayedButtonAction = DelayedButtonAction.HighScores;
+        AnyButtonClicked();
+    }
+
     public void OptionsButtonClick()
     {
         CurrentDelayedButtonAction = DelayedButtonAction.Options;
@@ -87,6 +94,7 @@ public class MainMenu : MonoBehaviour
     public void SetButtonsActive(bool active)
     {
         StartGameButton.gameObject.SetActive(active);
+        HighScoresButton.gameObject.SetActive(active);
         OptionsButton.gameObject.SetActive(active);
         ExitButton.gameObject.SetActive(active);
     }

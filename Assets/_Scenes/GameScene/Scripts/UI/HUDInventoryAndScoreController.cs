@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System;
 
-public class HUDInventoryController : LevelChangeListener
+public class HUDInventoryAndScoreController : LevelChangeListener
 {
     // HUD UI Objects
     public GameObject MissilesLeftIcon;
@@ -113,6 +113,11 @@ public class HUDInventoryController : LevelChangeListener
     // ========================================
     // Score
     // ========================================
+
+    public int GetCurrentScore()
+    {
+        return CurrentScore;
+    }
 
     public void AddScore(int points)
     {

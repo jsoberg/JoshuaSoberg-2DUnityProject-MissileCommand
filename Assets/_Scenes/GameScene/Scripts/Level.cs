@@ -14,4 +14,9 @@ public class Level
     {
         return CurrentLevel;
     }
+
+    public static void Reset()
+    {
+        CurrentLevel = 0;
+    }
 }

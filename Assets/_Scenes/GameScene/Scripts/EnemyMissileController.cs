@@ -65,7 +65,7 @@ public class EnemyMissileController : MissileController
     private void InformScoreAdded()
     {
         int scoreAdded = GetScoreAddedForMissileDestruction();
-        HUDInventoryController controller = (HUDInventoryController)Object.FindObjectOfType(typeof(HUDInventoryController));
+        HUDInventoryAndScoreController controller = (HUDInventoryAndScoreController)Object.FindObjectOfType(typeof(HUDInventoryAndScoreController));
         controller.AddScore(scoreAdded);
     }
 

@@ -8,7 +8,7 @@ public class InputController : MonoBehaviour
 	public const int MOUSE_FINGER_ID = -1;
 	
 	public EventSystem UiEventSystem;
-    public HUDInventoryController HudInventoryController;
+    public HUDInventoryAndScoreController HudInventoryController;
 
     public SiloController CenterSilo;
     public SiloController LeftSilo;

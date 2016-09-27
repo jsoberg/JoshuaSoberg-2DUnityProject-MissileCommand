@@ -1,10 +1,17 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameOverController : MonoBehaviour
 {
     public Text GameOverText;
+
+    public GameObject NewHighScoreOptions;
+    public Button ViewHighScoresButton;
+    public GameObject CoreMenu;
+
+    private bool IsGameOver;
 
 	void Start ()
     {
@@ -49,6 +56,12 @@ public class GameOverController : MonoBehaviour
 
     private void GameOver()
     {
+        // Game is already over.
+        if (IsGameOver) {
+            return;
+        }
+
+        IsGameOver = true;
         ((LevelController) Object.FindObjectOfType(typeof(LevelController))).InformGameOver();
         GameOverText.gameObject.SetActive(true);
         StartCoroutine(FadeGameOverTextIn(3f));
@@ -62,5 +75,36 @@ public class GameOverController : MonoBehaviour
             GameOverText.color = new Color(GameOverText.color.r, GameOverText.color.g, GameOverText.color.b, GameOverText.color.a + (Time.deltaTime / t));
             yield return null;
         }
+
+        ShowMenu();
+    }
+
+    private void ShowMenu()
+    {
+        if (IsNewHighScore()) {
+            NewHighScoreOptions.SetActive(true);
+        } else {
+            ViewHighScoresButton.gameObject.SetActive(true);
+        }
+
+        CoreMenu.SetActive(true);
+    }
+
+    private bool IsNewHighScore()
+    {
+        HUDInventoryAndScoreController scoreController = (HUDInventoryAndScoreController) Object.FindObjectOfType(typeof(HUDInventoryAndScoreController));
+        int score = scoreController.GetCurrentScore();
+        Queue<HighScore> highScores = HighScoreUtils.GetHighScores();
+        if (highScores.Count < 10) {
+            return true;
+        }
+
+        foreach (HighScore highScore in highScores) {
+            if (score >= highScore.Score) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -1,2 +1,2 @@
-# Soberg_2DUnityProject
-2D Unity project for CPSC 577
+# Soberg Missile Command
+Simple 2D Unity project mirroring Missile Command.
